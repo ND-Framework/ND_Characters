@@ -94,7 +94,7 @@ $(function() {
         }
 
         if (item.type === "firstSpawn") {
-            $("#tpDoNot").text("Do not teleport")
+            $("#tpDoNot").html(`<a class="fas fa-compass" style="color:white;"></a> Do not teleport`)
         }
 
         if (item.type === "givePerms") {
@@ -106,7 +106,7 @@ $(function() {
         }
 
         if (item.type === "aop") {
-            $("#aop").text(`AOP: ${item.aop}`);
+            $("#aop").text(item.aop);
         }
 
         if (item.type === "refresh") {
