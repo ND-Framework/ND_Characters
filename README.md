@@ -9,7 +9,7 @@
 * Edit characters
 * Delete characters
 * Switch character
-* Customize ped
+* Customize ped (requires [fivem-appearance](https://github.com/pedr0fontoura/fivem-appearance/releases))
 * Save data to each character
 
 ## Need support?
