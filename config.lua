@@ -2,8 +2,8 @@
 
 config = {
     changeCharacterCommand = "changecharacter", -- this is the command to open the ui again and change your character.
-    enableAppearance = true, -- you need to install fivem-appearance
-    characterSelectionAopDisplay = true,
+    enableAppearance = false, -- if this is true you need to install fivem-appearance otherwise you won't be able to customize and save ped.
+    characterSelectionAopDisplay = false, -- if this is true then you must add a export below and return the value.
     aopExport = function()
         return exports["SimpleHUD"]:getAOP() -- exports["ModernHUD"]:getAOP()
     end,
