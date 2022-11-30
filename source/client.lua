@@ -36,14 +36,14 @@ end
 -- Set the player to creating the ped if they haven't already.
 function setCharacterClothes(character)
     if config.enableAppearance then
-        if not character.clothing or next(character.clothing) == nil then
+        if not character.data.clothing or next(character.data.clothing) == nil then
             changeAppearence = true
         else
             changeAppearence = false
-            exports["fivem-appearance"]:setPlayerModel(character.clothing.model)
+            exports["fivem-appearance"]:setPlayerModel(character.data.clothing.model)
             local ped = PlayerPedId()
-            exports["fivem-appearance"]:setPedTattoos(ped, character.clothing.tattoos)
-            exports["fivem-appearance"]:setPedAppearance(ped, character.clothing.appearance)
+            exports["fivem-appearance"]:setPedTattoos(ped, character.data.clothing.tattoos)
+            exports["fivem-appearance"]:setPedAppearance(ped, character.data.clothing.appearance)
         end
     end
 end
@@ -138,11 +138,12 @@ end)
 RegisterNUICallback("setMainCharacter", function(data)
     local characters = NDCore.Functions.GetCharacters()
     local defaultSpawns = config.spawns["DEFAULT"]
-    local jobSpawns = config.spawns[characters[data.id].job]
     local spawns = {}
     for _, spawn in pairs(defaultSpawns) do
         spawns[#spawns + 1] = spawn
     end
+    local job = characters[data.id].job
+    local jobSpawns = config.spawns[job]
     if jobSpawns then
         for _, newSpawn in pairs(jobSpawns) do
             spawns[#spawns + 1] = newSpawn
@@ -250,6 +251,7 @@ end)
 
 -- Change character command
 RegisterCommand(config.changeCharacterCommand, function()
+    TriggerServerEvent("ND:GetCharacters")
     local ped = PlayerPedId()
     SwitchOutPlayer(ped, 0, 1)
     Wait(2000)

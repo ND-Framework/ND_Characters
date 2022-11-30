@@ -27,7 +27,9 @@ RegisterNetEvent("ND_CharacterSelection:newCharacter", function(newCharacter)
     if not departmentCheck then return end
 
     -- Create the character if the player has permission to the department.
-    NDCore.Functions.CreateCharacter(player, newCharacter.firstName, newCharacter.lastName, newCharacter.dob, newCharacter.gender, newCharacter.twt, newCharacter.job, newCharacter.cash, newCharacter.bank)
+    local characterId = NDCore.Functions.CreateCharacter(player, newCharacter.firstName, newCharacter.lastName, newCharacter.dob, newCharacter.gender, newCharacter.cash, newCharacter.bank)
+    NDCore.Functions.SetPlayerData(characterId, "twtName", newCharacter.twt)
+    NDCore.Functions.SetPlayerJob(characterId, newCharacter.job, 1)
 end)
 
 -- Update the character info when edited.
@@ -43,7 +45,9 @@ RegisterNetEvent("ND_CharacterSelection:editCharacter", function(newCharacter)
     if not departmentCheck then return end
     
     -- Updating the character information in the database.
-    NDCore.Functions.UpdateCharacterData(newCharacter.id, newCharacter.firstName, newCharacter.lastName, newCharacter.dob, newCharacter.gender, newCharacter.twt, newCharacter.job)
+    NDCore.Functions.UpdateCharacter(newCharacter.id, newCharacter.firstName, newCharacter.lastName, newCharacter.dob, newCharacter.gender)
+    NDCore.Functions.SetPlayerData(newCharacter.id, "twtName", newCharacter.twt)
+    NDCore.Functions.SetPlayerData(newCharacter.id, "job", newCharacter.job, 1)
 
     -- Updating characters on the client.
     TriggerClientEvent("ND:returnCharacters", player, NDCore.Functions.GetPlayerCharacters(player))
@@ -72,11 +76,13 @@ if config.departmentPaychecks then
             Wait(config.paycheckInterval * 60000)
             for player, playerInfo in pairs(NDCore.Functions.GetPlayers()) do
                 local salary = config.departmentSalaries[playerInfo.job]
-                NDCore.Functions.AddMoney(salary, player, "bank")
-                TriggerClientEvent("chat:addMessage", player, {
-                    color = {0, 255, 0},
-                    args = {"Salary", "Received $" .. salary .. "."}
-                })
+                if salary then
+                    NDCore.Functions.AddMoney(salary, player, "bank")
+                    TriggerClientEvent("chat:addMessage", player, {
+                        color = {0, 255, 0},
+                        args = {"Salary", "Received $" .. salary .. "."}
+                    })
+                end
             end
         end
     end)
