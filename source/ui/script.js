@@ -157,12 +157,10 @@ $(function() {
             dateOfBirth: $("#dateOfBirth").val(),
             gender: $("#gender").val(),
             twtName: $("#twtName").val(),
-            department: $("#department").val(),
-            startingCash: $("#startingCash").val(),
-            startingBank: $("#startingBank").val()
+            department: $("#department").val()
         }));
         characterCreatorMenu(false)
-        $("#firstName, #lastName, #dateOfBirth, #twtName, #startingCash, #startingBank").val("")
+        $("#firstName, #lastName, #dateOfBirth, #twtName).val("")
         return false;
     });
 
