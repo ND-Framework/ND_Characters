@@ -167,9 +167,7 @@ RegisterNUICallback("newCharacter", function(data)
             dob = data.dateOfBirth,
             gender = data.gender,
             twt = data.twtName,
-            job = data.department,
-            cash = data.startingCash,
-            bank = data.startingBank
+            job = data.department
         })
     end
 end)
