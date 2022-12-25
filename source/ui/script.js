@@ -160,7 +160,7 @@ $(function() {
             department: $("#department").val()
         }));
         characterCreatorMenu(false)
-        $("#firstName, #lastName, #dateOfBirth, #twtName).val("")
+        $("#firstName, #lastName, #dateOfBirth, #twtName").val("")
         return false;
     });
 
