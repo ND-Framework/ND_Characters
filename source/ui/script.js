@@ -114,7 +114,7 @@ $(function() {
             characterCreatorMenu(false);
             let characters = JSON.parse(item.characters)
             Object.keys(characters).forEach((id) => {
-                createCharacter(characters[id].firstName, characters[id].lastName, characters[id].dob, characters[id].gender, characters[id].data.twtName, characters[id].job, characters[id].id);
+                createCharacter(characters[id].firstName || "", characters[id].lastName || "", characters[id].dob || "", characters[id].gender || "", characters[id].data.twtName || "", characters[id].job || "", characters[id].id || "");
             });
         }
     })
