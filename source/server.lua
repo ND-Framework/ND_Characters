@@ -27,7 +27,7 @@ RegisterNetEvent("ND_CharacterSelection:newCharacter", function(newCharacter)
     if not departmentCheck then return end
 
     -- Create the character if the player has permission to the department.
-    NDCore.Functions.CreateCharacter(player, newCharacter.firstName, newCharacter.lastName, newCharacter.dob, newCharacter.gender, newCharacter.cash, newCharacter.bank, function(characterId)
+    NDCore.Functions.CreateCharacter(player, newCharacter.firstName, newCharacter.lastName, newCharacter.dob, newCharacter.gender, function(characterId)
         NDCore.Functions.SetPlayerData(characterId, "twtName", newCharacter.twt)
         NDCore.Functions.SetPlayerJob(characterId, newCharacter.job, 1)
     end)
