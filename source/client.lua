@@ -166,7 +166,7 @@ RegisterNUICallback("newCharacter", function(data)
             lastName = data.lastName,
             dob = data.dateOfBirth,
             gender = data.gender,
-            twt = data.twtName,
+            ethnicity = data.ethnicity,
             job = data.department
         })
     end
@@ -180,7 +180,7 @@ RegisterNUICallback("editCharacter", function(data)
         lastName = data.lastName,
         dob = data.dateOfBirth,
         gender = data.gender,
-        twt = data.twtName,
+        ethnicity = data.ethnicity,
         job = data.department
     })
 end)
