@@ -260,3 +260,15 @@ end, false)
 
 -- chat suggestions
 TriggerEvent("chat:addSuggestion", "/" .. config.changeCharacterCommand, "Switch your framework character.")
+
+-- ModernHUD Notifications
+RegisterNetEvent('ShowPaycheckAndTaxNotification')
+AddEventHandler('ShowPaycheckAndTaxNotification', function(paycheck, taxAmount, job)
+    exports["ModernHUD"]:AndyyyNotify({
+        title = '<font color="#34eb52">'.. job .. ' Paycheck:</font>',
+        message = "Total amount received $" .. paycheck .. ".<br><font color='#eb3434'>Total tax deducted $" .. taxAmount .. ".</font>",
+        icon = "fas fa-money-bill-wave",
+        colorHex = "#34eb52",
+        timeout = 8000
+    })
+end)
