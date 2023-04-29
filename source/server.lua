@@ -78,13 +78,30 @@ if config.departmentPaychecks then
             for player, playerInfo in pairs(NDCore.Functions.GetPlayers()) do
                 local salary = config.departmentSalaries[playerInfo.job]
                 if salary then
-                    NDCore.Functions.AddMoney(salary, player, "bank")
-                    TriggerClientEvent("chat:addMessage", player, {
-                        color = {0, 255, 0},
-                        args = {"Salary", "Received $" .. salary .. "."}
-                    })
+                    -- Add random tax deduction between 15% to 25%
+                    local taxPercentage = math.random(15, 25)
+                    local taxAmount = salary * (taxPercentage / 100)
+                    local paycheck = salary - taxAmount
+
+                    if GetResourceState("ModernHUD") == "started" then
+                        -- ModernHUD is started, use ShowPaycheckAndTaxNotification
+                        TriggerClientEvent('ShowPaycheckAndTaxNotification', player, paycheck, taxAmount, playerInfo.job)
+                    else
+                        -- ModernHUD is not started, use chat notifications
+                        NDCore.Functions.AddMoney(salary, player, "bank")
+                        TriggerClientEvent("chat:addMessage", player, {
+                            color = {0, 255, 0},
+                            args = {"Salary", "Received $" .. salary .. "."}
+                        })
+                    end
                 end
             end
         end
     end)
 end
+
+
+
+
+
+
