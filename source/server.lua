@@ -84,14 +84,15 @@ if config.departmentPaychecks then
                     local paycheck = salary - taxAmount
 
                     if GetResourceState("ModernHUD") == "started" then
-                        -- ModernHUD is started, use ShowPaycheckAndTaxNotification
+                        -- ModernHUD is started, use ShowPaycheckAndTaxNotification						
+                        NDCore.Functions.AddMoney(paycheck, player, "bank")
                         TriggerClientEvent('ShowPaycheckAndTaxNotification', player, paycheck, taxAmount, playerInfo.job)
                     else
                         -- ModernHUD is not started, use chat notifications
-                        NDCore.Functions.AddMoney(salary, player, "bank")
+                        NDCore.Functions.AddMoney(paycheck, player, "bank")
                         TriggerClientEvent("chat:addMessage", player, {
                             color = {0, 255, 0},
-                            args = {"Salary", "Received $" .. salary .. "."}
+                            args = {"Salary", "Received $" .. paycheck .. "."}
                         })
                     end
                 end

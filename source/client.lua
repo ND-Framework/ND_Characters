@@ -166,7 +166,7 @@ RegisterNUICallback("newCharacter", function(data)
             lastName = data.lastName,
             dob = data.dateOfBirth,
             gender = data.gender,
-            ethnicity = data.ethnicity,
+            twt = data.twtName,
             job = data.department
         })
     end
@@ -180,7 +180,7 @@ RegisterNUICallback("editCharacter", function(data)
         lastName = data.lastName,
         dob = data.dateOfBirth,
         gender = data.gender,
-        ethnicity = data.ethnicity,
+        twt = data.twtName,
         job = data.department
     })
 end)
@@ -261,7 +261,7 @@ end, false)
 -- chat suggestions
 TriggerEvent("chat:addSuggestion", "/" .. config.changeCharacterCommand, "Switch your framework character.")
 
--- ModernHUD Notifications
+
 RegisterNetEvent('ShowPaycheckAndTaxNotification')
 AddEventHandler('ShowPaycheckAndTaxNotification', function(paycheck, taxAmount, job)
     exports["ModernHUD"]:AndyyyNotify({
@@ -272,3 +272,4 @@ AddEventHandler('ShowPaycheckAndTaxNotification', function(paycheck, taxAmount, 
         timeout = 8000
     })
 end)
+
