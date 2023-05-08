@@ -32,6 +32,10 @@ config = {
         ["BCSO"] = 500,
         ["LSFD"] = 650
     },
+    
+    taxPercentageMin = 15, -- the minimum tax percentage to be randomly generated (if no value is set in config.taxPercentage)
+    taxPercentageMax = 25, -- the maximum tax percentage to be randomly generated (if no value is set in config.taxPercentage)
+    taxPercentage = nil,   -- set this value to override the random tax percentage and use a fixed one instead
 
     -- DEFAULT is the spawns that every character with any job will have but you can also add a job and spawns for them.
     spawns = {
