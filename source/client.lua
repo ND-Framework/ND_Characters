@@ -264,12 +264,20 @@ TriggerEvent("chat:addSuggestion", "/" .. config.changeCharacterCommand, "Switch
 
 RegisterNetEvent('ShowPaycheckAndTaxNotification')
 AddEventHandler('ShowPaycheckAndTaxNotification', function(paycheck, taxAmount, job)
-    exports["ModernHUD"]:AndyyyNotify({
-        title = '<font color="#34eb52">'.. job .. ' Paycheck:</font>',
-        message = "Total amount received $" .. paycheck .. ".<br><font color='#eb3434'>Total tax deducted $" .. taxAmount .. ".</font>",
-        icon = "fas fa-money-bill-wave",
-        colorHex = "#34eb52",
-        timeout = 8000
-    })
+    if GetResourceState('ModernHUD') == 'started' then
+        exports["ModernHUD"]:AndyyyNotify({
+            title = '<font color="#34eb52">Los Santos Paycheck:</font>',
+            message = "Total amount received $" .. paycheck .. ".<br><font color='#eb3434'>Total tax deducted $" .. taxAmount .. ".</font>",
+            icon = "bank",
+            colorHex = "#34eb52",
+            timeout = 8000
+        })
+    else
+        SetNotificationTextEntry('STRING')
+        AddTextComponentString(job .. ' Paycheck:\nTotal amount received $' .. paycheck .. '.\nTotal tax deducted $' .. taxAmount .. '.')
+        SetNotificationIcon("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA", true)
+        DrawNotification(false, false)
+    end
 end)
+
 
