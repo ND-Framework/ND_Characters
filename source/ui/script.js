@@ -114,12 +114,12 @@ $(function() {
             characterCreatorMenu(false);
             let characters = JSON.parse(item.characters)
             Object.keys(characters).forEach((id) => {
-                createCharacter(characters[id].firstName || "", characters[id].lastName || "", characters[id].dob || "", characters[id].gender || "", characters[id].data.ethnicity || "", characters[id].job || "", characters[id].id || "");
+                createCharacter(characters[id].firstName || "", characters[id].lastName || "", characters[id].dob || "", characters[id].gender || "", characters[id].twt || "", characters[id].job || "", characters[id].id || "");
             });
         }
     })
 
-    function createCharacter(firstName, lastName, dateOfBirth, gender, ethnicity, department, id) {
+    function createCharacter(firstName, lastName, dateOfBirth, gender, twtName, department, id) {
         if ((firstName.length + lastName.length + department.length) > 24) {
             $("#charactersSection").append(`<button id="characterButton${id}" class="createdButton animated"><span>${firstName} ${lastName} (${department})</span></button><button id="characterButtonEdit${id}" class="createdButtonEdit"><a class="fas fa-edit"></a> Edit</button><button id="characterButtonDelete${id}" class="createdButtonDelete"><a class="fas fa-trash-alt"></a> Delete</button>`);
         } else {
@@ -138,7 +138,7 @@ $(function() {
             $("#newLastName").val(lastName);
             $("#newDateOfBirth").val(dateOfBirth);
             $("#newGender").val(gender);
-            $("#newTwtName").val(ethnicity);
+            $("#newTwtName").val(twtName);
             $("#newDepartment").val(department);
             characterEdited = id
             return;
@@ -156,7 +156,7 @@ $(function() {
             lastName: $("#lastName").val(),
             dateOfBirth: $("#dateOfBirth").val(),
             gender: $("#gender").val(),
-            ethnicity: $("#twtName").val(),
+            twtName: $("#twtName").val(),
             department: $("#department").val()
         }));
         characterCreatorMenu(false)
@@ -171,7 +171,7 @@ $(function() {
             lastName: $("#newLastName").val(),
             dateOfBirth: $("#newDateOfBirth").val(),
             gender: $("#newGender").val(),
-            ethnicity: $("#newTwtName").val(),
+            twtName: $("#newTwtName").val(),
             department: $("#newDepartment").val(),
             id: characterEdited
         }));
