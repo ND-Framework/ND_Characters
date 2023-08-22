@@ -1,0 +1,2 @@
+ALTER TABLE `characters`
+ADD COLUMN `twt` VARCHAR(50) NULL DEFAULT NULL AFTER `gender`;
