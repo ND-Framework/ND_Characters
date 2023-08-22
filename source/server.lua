@@ -28,7 +28,7 @@ RegisterNetEvent("ND_CharacterSelection:newCharacter", function(newCharacter)
 
     -- Create the character if the player has permission to the department.
     NDCore.Functions.CreateCharacter(player, newCharacter.firstName, newCharacter.lastName, newCharacter.dob, newCharacter.gender, function(characterId)
-        NDCore.Functions.SetPlayerData(characterId, "ethnicity", newCharacter.ethnicity)
+        NDCore.Functions.SetPlayerData(characterId, "twt", newCharacter.ethnicity)
         NDCore.Functions.SetPlayerJob(characterId, newCharacter.job, 1)
     end)
 end)
@@ -47,7 +47,7 @@ RegisterNetEvent("ND_CharacterSelection:editCharacter", function(newCharacter)
     
     -- Updating the character information in the database.
     NDCore.Functions.UpdateCharacter(newCharacter.id, newCharacter.firstName, newCharacter.lastName, newCharacter.dob, newCharacter.gender)
-    NDCore.Functions.SetPlayerData(newCharacter.id, "ethnicity", newCharacter.ethnicity)
+    NDCore.Functions.SetPlayerData(newCharacter.id, "twt", newCharacter.ethnicity)
     NDCore.Functions.SetPlayerData(newCharacter.id, "job", newCharacter.job, 1)
 
     -- Updating characters on the client.
