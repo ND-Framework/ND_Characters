@@ -27,7 +27,7 @@ RegisterNetEvent("ND_CharacterSelection:newCharacter", function(newCharacter)
     if not departmentCheck then return end
 
     -- Create the character if the player has permission to the department.
-    NDCore.Functions.CreateCharacter(player, newCharacter.firstName, newCharacter.lastName, newCharacter.dob, newCharacter.gender, function(characterId)
+    NDCore.Functions.CreateCharacter(player, newCharacter.firstName, newCharacter.lastName, newCharacter.dob, newCharacter.gender, newCharacter.twt, function(characterId)
         NDCore.Functions.SetPlayerData(characterId, "twt", newCharacter.twt)
         NDCore.Functions.SetPlayerJob(characterId, newCharacter.job, 1)
     end)
@@ -46,7 +46,7 @@ RegisterNetEvent("ND_CharacterSelection:editCharacter", function(newCharacter)
     if not departmentCheck then return end
     
     -- Updating the character information in the database.
-    NDCore.Functions.UpdateCharacter(newCharacter.id, newCharacter.firstName, newCharacter.lastName, newCharacter.dob, newCharacter.gender)
+    NDCore.Functions.UpdateCharacter(newCharacter.id, newCharacter.firstName, newCharacter.lastName, newCharacter.dob, newCharacter.gender, newCharacter.twt)
     NDCore.Functions.SetPlayerData(newCharacter.id, "twt", newCharacter.twt)
     NDCore.Functions.SetPlayerData(newCharacter.id, "job", newCharacter.job, 1)
 
