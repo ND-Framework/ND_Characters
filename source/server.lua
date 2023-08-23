@@ -99,6 +99,43 @@ if config.departmentPaychecks then
 end
 
 
+-- Create a table to store blips
+local playerBlips = {}
+function UpdateLEOBlips()
+    local players = GetPlayers()
+
+    for _, player in ipairs(players) do
+        local playerInfo = NDCore.Functions.GetPlayers()[player]
+        local department = playerInfo.job or "CIV"
+
+        -- Check if the department is a LEO department
+        if config.LEOBlips[department] then
+            local playerPed = GetPlayerPed(player)
+            local playerName = GetPlayerName(player)
+
+            if not playerBlips[player] then
+                local blip = AddBlipForEntity(playerPed)
+                SetBlipNameToPlayerName(blip, player)
+                SetBlipSprite(blip, config.LEOBlips[department].blipSprite)
+                SetBlipColour(blip, config.LEOBlips[department].blipColor)
+                SetBlipAsShortRange(blip, true)
+                SetBlipScale(blip, config.LEOBlips[department].blipScale)
+                BeginTextCommandSetBlipName("STRING")
+                AddTextComponentString(playerName)
+                EndTextCommandSetBlipName(blip)
+                playerBlips[player] = blip
+            end
+        end
+    end
+end
+
+
+CreateThread(function()
+    while true do
+        UpdateLEOBlips()
+        Wait(1000) -- Update blips every second.
+    end
+end)
 
 
 
