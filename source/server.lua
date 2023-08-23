@@ -27,8 +27,8 @@ RegisterNetEvent("ND_CharacterSelection:newCharacter", function(newCharacter)
     if not departmentCheck then return end
 
     -- Create the character if the player has permission to the department.
-    NDCore.Functions.CreateCharacter(player, newCharacter.firstName, newCharacter.lastName, newCharacter.dob, newCharacter.gender, newCharacter.twt, function(characterId)
-        NDCore.Functions.SetPlayerData(characterId, "twt", newCharacter.twt)
+    NDCore.Functions.CreateCharacter(player, newCharacter.firstName, newCharacter.lastName, newCharacter.dob, newCharacter.gender, function(characterId)
+        NDCore.Functions.SetPlayerData(characterId, "ethnicity", newCharacter.ethnicity)
         NDCore.Functions.SetPlayerJob(characterId, newCharacter.job, 1)
     end)
 end)
@@ -46,8 +46,8 @@ RegisterNetEvent("ND_CharacterSelection:editCharacter", function(newCharacter)
     if not departmentCheck then return end
     
     -- Updating the character information in the database.
-    NDCore.Functions.UpdateCharacter(newCharacter.id, newCharacter.firstName, newCharacter.lastName, newCharacter.dob, newCharacter.gender, newCharacter.twt)
-    NDCore.Functions.SetPlayerData(newCharacter.id, "twt", newCharacter.twt)
+    NDCore.Functions.UpdateCharacter(newCharacter.id, newCharacter.firstName, newCharacter.lastName, newCharacter.dob, newCharacter.gender)
+    NDCore.Functions.SetPlayerData(newCharacter.id, "ethnicity", newCharacter.ethnicity)
     NDCore.Functions.SetPlayerData(newCharacter.id, "job", newCharacter.job, 1)
 
     -- Updating characters on the client.
@@ -99,43 +99,6 @@ if config.departmentPaychecks then
 end
 
 
--- Create a table to store blips
-local playerBlips = {}
-function UpdateLEOBlips()
-    local players = GetPlayers()
-
-    for _, player in ipairs(players) do
-        local playerInfo = NDCore.Functions.GetPlayers()[player]
-        local department = playerInfo.job or "CIV"
-
-        -- Check if the department is a LEO department
-        if config.LEOBlips[department] then
-            local playerPed = GetPlayerPed(player)
-            local playerName = GetPlayerName(player)
-
-            if not playerBlips[player] then
-                local blip = AddBlipForEntity(playerPed)
-                SetBlipNameToPlayerName(blip, player)
-                SetBlipSprite(blip, config.LEOBlips[department].blipSprite)
-                SetBlipColour(blip, config.LEOBlips[department].blipColor)
-                SetBlipAsShortRange(blip, true)
-                SetBlipScale(blip, config.LEOBlips[department].blipScale)
-                BeginTextCommandSetBlipName("STRING")
-                AddTextComponentString(playerName)
-                EndTextCommandSetBlipName(blip)
-                playerBlips[player] = blip
-            end
-        end
-    end
-end
-
-
-CreateThread(function()
-    while true do
-        UpdateLEOBlips()
-        Wait(1000) -- Update blips every second.
-    end
-end)
 
 
 
