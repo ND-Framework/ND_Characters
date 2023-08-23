@@ -22,6 +22,24 @@ config = {
         ["BCSO"] = {"872921520719142932"},
         ["LSFD"] = {"872921520719142932"}
     },
+    
+   LEOBlips = {
+    ["SAHP"] = {
+        blipSprite = 56,   -- Blip sprite for SAHP
+        blipColor = 38,    -- Blip color (use a color code)
+        blipScale = 0.8    -- Blip scale
+    },
+    ["LSPD"] = {
+        blipSprite = 56,   -- Blip sprite for LSPD
+        blipColor = 38,    -- Blip color (use a color code)
+        blipScale = 0.8    -- Blip scale
+    },
+    ["BCSO"] = {
+        blipSprite = 56,   -- Blip sprite for BCSO
+        blipColor = 38,    -- Blip color (use a color code)
+        blipScale = 0.8    -- Blip scale
+    }
+},
 
     departmentPaychecks = false,            -- if you would like salaries to be paid out to the departments, set this to true
     paycheckInterval = 24,                  -- this is how often (in minutes) paychecks are to be paid out if departmentPaychecks is set to true
