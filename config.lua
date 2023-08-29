@@ -1,31 +1,48 @@
 -- For support join my discord: https://discord.gg/Z9Mxu72zZ6
 
-config = {
+Config = {
     changeCharacterCommand = "changecharacter", -- this is the command to open the ui again and change your character.
-    enableAppearance = false, -- if this is true you need to install fivem-appearance otherwise you won't be able to customize and save ped.
-    characterSelectionAopDisplay = false, -- if this is true then you must add a export below and return the value.
-    aopExport = function()
-        return exports["SimpleHUD"]:getAOP() -- exports["ModernHUD"]:getAOP()
-    end,
+    characterLimit = 5,
+    logo = "https://i.imgur.com/02A5Cgl.png",
 
     -- set your backgrounds, if you have more than 1 then it will randomly change everytime you open the ui.
     backgrounds = {
-        "https://i.imgur.com/E51ckFx.png",  -- Credits: Fuzzman270#0270
-        "https://i.imgur.com/SeZD7TP.png",  -- Credits: Fuzzman270#0270
-        "https://i.imgur.com/ZWKfYD9.png"   -- Credits: 2XRondo#6374
+        "https://i.imgur.com/E51ckFx.png",
+        "https://i.imgur.com/SeZD7TP.png",
+        "https://i.imgur.com/ZWKfYD9.png"
     },
 
-    departments = {                         -- these are the required discord role ids to be able to access these departments (enable developer mode in discord's advanced settings and right click the role)
-        ["CIV"] = {"0"},
-        ["SAHP"] = {"0"},
-        ["LSPD"] = {"0"},
-        ["BCSO"] = {"872921520719142932"},
-        ["LSFD"] = {"872921520719142932"}
+    startingMoney = {
+        cash = 2500,
+        bank = 8000
     },
 
-    departmentPaychecks = false,            -- if you would like salaries to be paid out to the departments, set this to true
-    paycheckInterval = 24,                  -- this is how often (in minutes) paychecks are to be paid out if departmentPaychecks is set to true
-    departmentSalaries = {                  -- the amount given to the character per interval of time set via paycheckInterval
+    -- these are the required discord role ids to be able to access these departments (enable developer mode in discord's advanced settings and right click the role)
+    jobs = {
+        ["CIV"] = {
+            "0" -- everyone will have this if 0
+        },
+        ["SAHP"] = {
+            "872921520719142932",
+            "872921520719142932"
+        },
+        ["LSPD"] = {
+            "872921520719142932",
+            "872921520719142932"
+        },
+        ["BCSO"] = {
+            "872921520719142932",
+            "872921520719142932"
+        },
+        ["LSFD"] = {
+            "872921520719142932",
+            "872921520719142932"
+        }
+    },
+
+    paychecks = false, -- if you would like salaries to be paid out to the departments, set this to true
+    paycheckInterval = 24, -- this is how often (in minutes) paychecks are to be paid out if departmentPaychecks is set to true
+    salaries = { -- the amount given to the character per interval of time set via paycheckInterval
         ["CIV"] = 300,
         ["SAHP"] = 700,
         ["LSPD"] = 600,
