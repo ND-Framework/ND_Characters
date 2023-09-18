@@ -137,11 +137,12 @@ $("#exitGameConfirm").click(function() {
 });
 
 $(document).on("click", ".spawnButtons", function() {
+    const th = $(this)
     $.post(`https://${GetParentResourceName()}/tpToLocation`, JSON.stringify({
-        x: $(this).data("x"),
-        y: $(this).data("y"),
-        z: $(this).data("z"),
-        id: item.id
+        x: th.data("x"),
+        y: th.data("y"),
+        z: th.data("z"),
+        id: th.data("id")
     }));
     displayMenu("spawnLocation", false);
     setTimeout(function(){
@@ -179,7 +180,7 @@ window.addEventListener("message", function(event) {
         setTimeout(function(){
             $("#tpDoNot").data("id", item.id);
             JSON.parse(item.spawns).forEach((location) => {
-                $("#spawnMenuContainer").append(`<button class="spawnButtons" data-x="${location.x}" data-y="${location.y}" data-z="${location.z}">${location.name}</button>`);
+                $("#spawnMenuContainer").append(`<button class="spawnButtons" data-x="${location.x}" data-y="${location.y}" data-z="${location.z}" data-id="${item.id}">${location.name}</button>`);
             });
         }, 10);
     }
