@@ -44,7 +44,7 @@ local function startChangeAppearence(dontReturn)
             appearance = exports["fivem-appearance"]:getPedAppearance(ped)
         }
         Wait(4000)
-        TriggerServerEvent("ND:updateClothes", clothing)
+        TriggerServerEvent("ND_Characters:updateClothing", clothing)
     end, Config)
 end
 

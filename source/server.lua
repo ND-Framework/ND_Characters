@@ -115,3 +115,10 @@ RegisterNetEvent("ND_Characters:exitGame", function()
     local src = source
     DropPlayer(src, "Quit from main menu")
 end)
+
+RegisterNetEvent("ND_Characters:updateClothing", function(clothing)
+    local src = source
+    local player = NDCore.getPlayer(src)
+    if not player or not clothing or type(clothing) ~= "table" then return end
+    player.setMetadata("clothing", clothing)
+end)
