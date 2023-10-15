@@ -1,5 +1,7 @@
 -- For support join my discord: https://discord.gg/Z9Mxu72zZ6
 
+NDCore.enableMultiCharacter(true)
+
 local function validateJob(source, job)
     if not job then return end
 
