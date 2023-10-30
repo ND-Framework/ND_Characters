@@ -275,8 +275,11 @@ RegisterNUICallback("tpDoNot", function(data)
     local character = characters[data.id]
     if firstSpawn then
         local data = character and character.metadata
-        if data and data.lastLocation then
-            SetEntityCoords(ped, data.lastLocation.x, data.lastLocation.y, data.lastLocation.z)
+        if data and data.location then
+            SetEntityCoords(ped, data.location.x, data.location.y, data.location.z)
+            if data.location.w then
+                SetEntityHeading(ped, data.location.w)
+            end
         end
         SetTimeout(1000, function()
             firstSpawn = false
