@@ -249,12 +249,15 @@ end)
 -- Teleporting using ui.
 RegisterNUICallback("tpToLocation", function(data)
     local ped = PlayerPedId()
-    SetEntityCoords(ped, tonumber(data.x), tonumber(data.y), tonumber(data.z), false, false, false, false)
     FreezeEntityPosition(ped, true)
+    SetEntityCoords(ped, tonumber(data.x), tonumber(data.y), tonumber(data.z), false, false, false, false)
     SwitchInPlayer(ped)
     Wait(500)
     SetDisplay(false, "ui")
     Wait(500)
+    while not HasCollisionLoadedAroundEntity(ped) do
+        Wait(100)
+    end
     FreezeEntityPosition(ped, false)
     SetEntityVisible(ped, true, 0)
     setCharacterClothes(NDCore.getPlayer())
@@ -272,6 +275,7 @@ end)
 -- Choosing the do not tp button.
 RegisterNUICallback("tpDoNot", function(data)
     local ped = PlayerPedId()
+    FreezeEntityPosition(ped, true)
     local character = characters[data.id]
     if firstSpawn then
         local data = character and character.metadata
@@ -288,11 +292,13 @@ RegisterNUICallback("tpDoNot", function(data)
             })
         end)
     end
-    FreezeEntityPosition(ped, true)
     SwitchInPlayer(ped)
     Wait(500)
     SetDisplay(false, "ui")
     Wait(500)
+    while not HasCollisionLoadedAroundEntity(ped) do
+        Wait(100)
+    end
     SetEntityVisible(ped, true, 0)
     FreezeEntityPosition(ped, false)
     Wait(100)
