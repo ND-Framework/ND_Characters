@@ -249,6 +249,7 @@ end)
 -- Teleporting using ui.
 RegisterNUICallback("tpToLocation", function(data)
     local ped = PlayerPedId()
+    local character = characters[data.id]
     FreezeEntityPosition(ped, true)
     SetEntityCoords(ped, tonumber(data.x), tonumber(data.y), tonumber(data.z), false, false, false, false)
     SwitchInPlayer(ped)
@@ -260,7 +261,7 @@ RegisterNUICallback("tpToLocation", function(data)
     end
     FreezeEntityPosition(ped, false)
     SetEntityVisible(ped, true, 0)
-    setCharacterClothes(NDCore.getPlayer())
+    setCharacterClothes(character)
     TriggerServerEvent("ND_Characters:select", data.id)
     SetTimeout(1000, function()
         if firstSpawn then
