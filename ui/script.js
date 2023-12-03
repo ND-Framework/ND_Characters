@@ -207,7 +207,9 @@ window.addEventListener("message", function(event) {
         let characters = JSON.parse(item.characters)
         Object.keys(characters).forEach((id) => {
             const char = characters[id]
-            createCharacter(char.firstname || "", char.lastname || "", char.dob || "", char.gender || "", char.metadata.ethnicity || "", char.jobInfo?.label || char.job || "", char.id || "");
+            if (char) {
+                createCharacter(char.firstname || "", char.lastname || "", char.dob || "", char.gender || "", char.metadata.ethnicity || "", char.jobInfo?.label || char.job || "", char.id || "");
+            }
         });
         if (item.characterAmount) {
             $("#playerAmount").text(item.characterAmount);
