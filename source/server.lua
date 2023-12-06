@@ -68,7 +68,7 @@ lib.callback.register("ND_Characters:delete", function(src, characterId)
 end)
 
 local function paySalary(player)
-    if not player or player.job then return end
+    if not player or not player.job then return end
     
     local salary
     for k, v in pairs(Config.salaries) do
