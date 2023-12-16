@@ -103,7 +103,7 @@ lib.callback.register("ND_Characters:fetchCharacters", function(source)
 
     for job, _ in pairs(Config.jobs) do
         if validateJob(source, job) then
-            perms[#perms+1] = job:lower()
+            perms[#perms+1] = job
         end
     end
 
