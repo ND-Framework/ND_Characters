@@ -112,6 +112,10 @@ function start(switch)
         type = "refresh",
         characters = json.encode(characters)
     })
+    SendNUIMessage({
+        type = "logo",
+        logo = Config.logo or "https://i.imgur.com/02A5Cgl.png"
+    })
     SetDisplay(true, "ui", background, characters)
     local aop = getAop()
     if not aop then return end
@@ -130,10 +134,6 @@ AddEventHandler("onResourceStart", function(resourceName)
     end
     Wait(1500)
     start(false)
-    SendNUIMessage({
-        type = "logo",
-        logo = Config.logo or "https://i.imgur.com/02A5Cgl.png"
-    })
 end)
 
 AddEventHandler("onResourceStop", function(resourceName)
