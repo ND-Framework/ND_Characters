@@ -190,6 +190,7 @@ window.addEventListener("message", function(event) {
     }
 
     if (item.type === "givePerms") {
+        $(".departments").empty();
         JSON.parse(item.deptRoles).forEach((job) => {
             $(".departments").append($("<option>", {
                 text: job
