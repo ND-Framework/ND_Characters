@@ -22,7 +22,7 @@ function displayMenu(menu, status) {
 
 function createCharacter(firstName, lastName, dateOfBirth, gender, ethnicity, department, id) {
     const job = department && ` (${department})`
-    if ((firstName.length + lastName.length + department.length) > 24) {
+    if (job && (firstName.length + lastName.length + job.length) > 24) {
         $("#charactersSection").append(`<button id="characterButton${id}" class="createdButton animated"><span>${firstName} ${lastName}${job}</span></button><button id="characterButtonEdit${id}" class="createdButtonEdit"><a class="fas fa-edit"></a> Edit</button><button id="characterButtonDelete${id}" class="createdButtonDelete"><a class="fas fa-trash-alt"></a> Delete</button>`);
     } else {
         $("#charactersSection").append(`<button id="characterButton${id}" class="createdButton"><span>${firstName} ${lastName}${job}</span></button><button id="characterButtonEdit${id}" class="createdButtonEdit"><a class="fas fa-edit"></a> Edit</button><button id="characterButtonDelete${id}" class="createdButtonDelete"><a class="fas fa-trash-alt"></a> Delete</button>`);
@@ -209,7 +209,15 @@ window.addEventListener("message", function(event) {
         Object.keys(characters).forEach((id) => {
             const char = characters[id]
             if (char) {
-                createCharacter(char.firstname || "", char.lastname || "", char.dob || "", char.gender || "", char.metadata.ethnicity || "", char.jobInfo?.label || char.job || "", char.id || "");
+                createCharacter(
+                    char.firstname || "",
+                    char.lastname || "",
+                    char.dob || "",
+                    char.gender || "",
+                    char.metadata.ethnicity || "",
+                    char.jobInfo?.label || char.job || "",
+                    char.id || "",
+                );
             }
         });
         if (item.characterAmount) {
