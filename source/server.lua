@@ -39,8 +39,10 @@ lib.callback.register("ND_Characters:new", function(src, newCharacter)
     })
 
     if validateJob(player.source, newCharacter.job) then
-        player.setJob(newCharacter.job)
+        player.jobInfo = player.setJob(newCharacter.job)
     end
+
+    player.save()
     return player
 end)
 
@@ -57,8 +59,10 @@ lib.callback.register("ND_Characters:edit", function(src, newCharacter)
     player.setMetadata("ethnicity", newCharacter.ethnicity)
 
     if validateJob(player.source, newCharacter.job) then
-        player.setJob(newCharacter.job)
+        player.jobInfo = player.setJob(newCharacter.job)
     end
+
+    player.save()
     return player
 end)
 
