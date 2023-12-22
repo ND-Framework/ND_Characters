@@ -1,14 +1,17 @@
 -- For support join my discord: https://discord.gg/Z9Mxu72zZ6
 
-author "Andyyy#7666"
+author "Andyyy7666"
 description "ND Character Selection (legacy)"
-version "2.0.0"
+version "2.0.1"
 
 fx_version "cerulean"
 game "gta5"
 lua54 "yes"
 
-dependency "ND_Core"
+dependencies {
+    "ND_Core",
+    "ox_lib"
+}
 
 shared_scripts {
     "@ox_lib/init.lua",
