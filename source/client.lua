@@ -192,6 +192,9 @@ end)
 RegisterNUICallback("newCharacter", function(data)
     if tablelength(characters) > Config.characterLimit then return end
     lib.callback("ND_Characters:new", false, function(player)
+        if not player then
+            return lib.print.warn("creating character unsuccessful")
+        end
         characters[player.id] = player
         SendNUIMessage({
             type = "refresh",
@@ -211,6 +214,9 @@ end)
 -- editing a character from the ui.
 RegisterNUICallback("editCharacter", function(data)
     lib.callback("ND_Characters:edit", false, function(player)
+        if not player then
+            return lib.print.warn("editing character unsuccessful")
+        end
         characters[player.id] = player
         SendNUIMessage({
             type = "refresh",
