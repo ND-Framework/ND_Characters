@@ -13,17 +13,18 @@ dependencies {
     "ox_lib"
 }
 
+files {
+    "ui/index.html",
+    "ui/script.js",
+    "ui/style.css",
+    "data/configuration.lua",
+    "data/spawns.lua"
+}
+ui_page "ui/index.html"
+
 shared_scripts {
     "@ox_lib/init.lua",
-    "@ND_Core/init.lua",
-    "config.lua"
+    "@ND_Core/init.lua"
 }
 server_script "source/server.lua"
 client_script "source/client.lua"
-
-files {
-	"ui/index.html",
-	"ui/script.js",
-	"ui/style.css"
-}
-ui_page "ui/index.html"

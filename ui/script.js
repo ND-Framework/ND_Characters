@@ -180,7 +180,7 @@ window.addEventListener("message", function(event) {
         setTimeout(function(){
             $("#tpDoNot").data("id", item.id);
             JSON.parse(item.spawns).forEach((location) => {
-                $("#spawnMenuContainer").append(`<button class="spawnButtons" data-x="${location.x}" data-y="${location.y}" data-z="${location.z}" data-id="${item.id}">${location.name}</button>`);
+                $("#spawnMenuContainer").append(`<button class="spawnButtons" data-x="${location.x}" data-y="${location.y}" data-z="${location.z}" data-id="${item.id}">${location.label}</button>`);
             });
         }, 10);
     }
@@ -192,9 +192,7 @@ window.addEventListener("message", function(event) {
     if (item.type === "givePerms") {
         $(".departments").empty();
         JSON.parse(item.deptRoles).forEach((job) => {
-            $(".departments").append($("<option>", {
-                text: job
-            }));
+            $(".departments").append(`<option value="${job.name}">${job.label}</option>`);
         });
     }
 

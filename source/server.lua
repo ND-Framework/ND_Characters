@@ -1,12 +1,24 @@
 -- For support join my discord: https://discord.gg/Z9Mxu72zZ6
 
+local config = {
+    permissions = lib.load("data.permissions") or {},
+    salaries = lib.load("data.salaries") or {},
+    configuration = lib.load("data.configuration") or {
+        characterLimit = 5,
+        startingMoney = {
+            cash = 2500,
+            bank = 8000
+        }
+    }
+}
+
 NDCore.enableMultiCharacter(true)
 
 local function validateJob(source, job)
     if not job then return end
 
     local jobExists
-    for k, v in pairs(Config.jobs) do
+    for k, v in pairs(config.permissions) do
         if k:lower() == job:lower() then
             jobExists = v
         end
@@ -26,13 +38,22 @@ end
 
 -- Creating a new character.
 lib.callback.register("ND_Characters:new", function(src, newCharacter)
+    local count = 0
+    local characters = NDCore.fetchAllCharacters(src)
+
+    for _, __ in pairs(characters) do
+        count += 1
+    end
+
+    if count >= config.configuration.characterLimit then return end
+
     local player = NDCore.newCharacter(src, {
         firstname = newCharacter.firstName,
         lastname = newCharacter.lastName,
         dob = newCharacter.dob,
         gender = newCharacter.gender,
-        cash = Config.startingMoney.cash,
-        bank = Config.startingMoney.bank,
+        cash = config.configuration.startingMoney.cash,
+        bank = config.configuration.startingMoney.bank,
         metadata = {
             ethnicity = newCharacter.ethnicity
         }
@@ -40,6 +61,9 @@ lib.callback.register("ND_Characters:new", function(src, newCharacter)
 
     if validateJob(player.source, newCharacter.job) then
         player.jobInfo = player.setJob(newCharacter.job)
+        if player.jobInfo then
+            player.job = newCharacter.job
+        end
     end
 
     player.save()
@@ -71,32 +95,48 @@ lib.callback.register("ND_Characters:delete", function(src, characterId)
     return player and player.delete()
 end)
 
-local function paySalary(player)
+local function getSalary(player)
     if not player or not player.job then return end
     
-    local salary
-    for k, v in pairs(Config.salaries) do
-        if k:lower() == player.job:lower() then
-            salary = v
+    local job = player.job:lower()
+    for name, info in pairs(config.salaries) do
+        if info.enabled and name:lower() == job then
+            return info
         end
     end
-    if not salary then return end
-
-    player.addMoney("bank", salary, "Salary")
-    player.notify({
-        title = "Salary",
-        description = ("Received $%d."):format(salary),
-        type = "success",
-        icon = "sack-dollar"
-    })
 end
 
 CreateThread(function()
-    local interval = Config.paycheckInterval*60000
-    while Config.paychecks do
-        Wait(interval)
+    local payChecks = false
+    for _, salary in pairs(config.salaries) do
+        if salary.enabled then
+            payChecks = true
+            break
+        end
+    end
+
+    local lastSalaryPayouts = {}
+    while payChecks do
+        Wait(60000)
+
+        local time = os.time()
         for _, player in pairs(NDCore.getPlayers()) do
-            paySalary(player)
+            local salaryInfo = getSalary(player) or config.salaries["default"] or config.salaries["DEFAULT"]
+            local src = player.source
+            local lastPayout = lastSalaryPayouts[src]
+
+            if salaryInfo and (not lastPayout or time-lastPayout > salaryInfo.interval*60) then                
+                local salary = salaryInfo.amount or 100
+                player.addMoney("bank", salary, "Salary")
+                player.notify({
+                    title = "Salary",
+                    description = ("Received $%d."):format(salary),
+                    type = "success",
+                    icon = "sack-dollar"
+                })
+                lastSalaryPayouts[src] = time
+            end
+
         end
     end
 end)
@@ -104,10 +144,14 @@ end)
 lib.callback.register("ND_Characters:fetchCharacters", function(source)
     local characters = NDCore.fetchAllCharacters(source)
     local perms = {}
+    local groups = NDCore.getConfig("groups") or {}
 
-    for job, _ in pairs(Config.jobs) do
+    for job, _ in pairs(config.permissions) do
         if validateJob(source, job) then
-            perms[#perms+1] = job
+            perms[#perms+1] = {
+                name = job,
+                label = groups[job]?.label or job
+            }
         end
     end
 

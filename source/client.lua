@@ -7,6 +7,19 @@ local firstSpawn = true
 local characters = {}
 local lastSource = GetResourceKvpInt("ND_Characters:source")
 local lastCharacter = GetResourceKvpInt("ND_Characters:character")
+local config = {
+    spawns = lib.load("data.spawns") or {},
+    configuration = lib.load("data.configuration") or {
+        changeCharacterCommand = "changecharacter",
+        characterLimit = 5,
+        logo = "https://i.imgur.com/02A5Cgl.png",
+        backgrounds = {
+            "https://i.imgur.com/E51ckFx.png",
+            "https://i.imgur.com/SeZD7TP.png",
+            "https://i.imgur.com/ZWKfYD9.png"
+        }
+    }    
+}
 
 local function getAop()
     local resources = {
@@ -22,16 +35,6 @@ local function getAop()
 end
 
 local function startChangeAppearence(dontReturn)
-    local Config = {
-        ped = true,
-        headBlend = true,
-        faceFeatures = true,
-        headOverlays = true,
-        components = true,
-        props = true,
-        tattoos = false
-    }
-
     exports["fivem-appearance"]:startPlayerCustomization(function(appearance)
         if not appearance then
             return not dontReturn and start(true)
@@ -45,7 +48,15 @@ local function startChangeAppearence(dontReturn)
         }
         Wait(4000)
         TriggerServerEvent("ND_Characters:updateClothing", clothing)
-    end, Config)
+    end, {
+        ped = true,
+        headBlend = true,
+        faceFeatures = true,
+        headOverlays = true,
+        components = true,
+        props = true,
+        tattoos = false
+    })
 end
 
 -- Set the player to creating the ped if they haven't already.
@@ -54,6 +65,7 @@ local function setCharacterClothes(character)
     local clothing = character.metadata.clothing
 
     if not clothing or not next(clothing) then
+        Wait(3000)
         return startChangeAppearence()
     end
 
@@ -77,15 +89,15 @@ function SetDisplay(bool, typeName, bg, chars)
         characterAmount = {}
     end
     if not bg then
-        background = Config.backgrounds[math.random(1, #Config.backgrounds)]
+        background = config.configuration.backgrounds[math.random(1, #config.configuration.backgrounds)]
     end
     SetNuiFocus(bool, bool)
     SendNUIMessage({
         type = typeName,
         background = background,
         status = bool,
-        serverName = Config.serverName,
-        characterAmount = ("%d/%d"):format(tablelength(characterAmount), Config.characterLimit)
+        serverName = NDCore.getConfig("serverName"),
+        characterAmount = ("%d/%d"):format(tablelength(characterAmount), config.configuration.characterLimit)
     })
     Wait(500)
     local aop = getAop()
@@ -114,7 +126,7 @@ function start(switch)
     })
     SendNUIMessage({
         type = "logo",
-        logo = Config.logo or "https://i.imgur.com/02A5Cgl.png"
+        logo = config.configuration.logo or "https://i.imgur.com/02A5Cgl.png"
     })
     SetDisplay(true, "ui", background, characters)
     local aop = getAop()
@@ -152,24 +164,25 @@ local function sortSpawns(chars, id)
     local player = chars[id]
     if not player then return end
     
-    local defaultSpawns = Config.spawns["DEFAULT"]
+    local defaultSpawns = config.spawns["default"] or config.spawns["DEFAULT"]
     local spawns = {}
     for _, spawn in pairs(defaultSpawns) do
         spawns[#spawns+1] = spawn
     end
     
     local job = player.job
-    if job then
-        local jobSpawns = {}
-        for k, v in pairs(Config.spawns) do
-            if k:lower() == job:lower() then
-                jobSpawns = v
-            end
+    if not job then return spawns end
+    
+    local jobSpawns = {}
+    for k, v in pairs(config.spawns) do
+        if k:lower() == job:lower() then
+            jobSpawns = v
+            break
         end
-        
-        for _, newSpawn in pairs(jobSpawns) do
-            spawns[#spawns + 1] = newSpawn
-        end
+    end
+    
+    for _, newSpawn in pairs(jobSpawns) do
+        spawns[#spawns+1] = newSpawn
     end
 
     return spawns
@@ -190,7 +203,7 @@ end)
 
 -- Creating a character from the ui.
 RegisterNUICallback("newCharacter", function(data)
-    if tablelength(characters) > Config.characterLimit then return end
+    if tablelength(characters) > config.configuration.characterLimit then return end
     lib.callback("ND_Characters:new", false, function(player)
         if not player then
             return lib.print.warn("creating character unsuccessful")
@@ -199,7 +212,7 @@ RegisterNUICallback("newCharacter", function(data)
         SendNUIMessage({
             type = "refresh",
             characters = json.encode(characters),
-            characterAmount = ("%d/%d"):format(tablelength(characters), Config.characterLimit)
+            characterAmount = ("%d/%d"):format(tablelength(characters), config.configuration.characterLimit)
         })
     end, {
         firstName = data.firstName,
@@ -221,7 +234,7 @@ RegisterNUICallback("editCharacter", function(data)
         SendNUIMessage({
             type = "refresh",
             characters = json.encode(characters),
-            characterAmount = ("%d/%d"):format(tablelength(characters), Config.characterLimit)
+            characterAmount = ("%d/%d"):format(tablelength(characters), config.configuration.characterLimit)
         })
     end, {
         id = data.id,
@@ -242,7 +255,7 @@ RegisterNUICallback("delCharacter", function(data)
         SendNUIMessage({
             type = "refresh",
             characters = json.encode(characters),
-            characterAmount = ("%d/%d"):format(tablelength(characters), Config.characterLimit)
+            characterAmount = ("%d/%d"):format(tablelength(characters), config.configuration.characterLimit)
         })
     end, data.character)
 end)
@@ -321,12 +334,12 @@ RegisterNetEvent("ND:characterMenu", function()
     start(true)
 end)
 
-if Config.changeCharacterCommand then
+if config.configuration.changeCharacterCommand then
     -- Change character command
-    RegisterCommand(Config.changeCharacterCommand, function()
+    RegisterCommand(config.configuration.changeCharacterCommand, function()
         start(true)
     end, false)
     
     -- chat suggestions
-    TriggerEvent("chat:addSuggestion", "/" .. Config.changeCharacterCommand, "Switch your framework character.")
+    TriggerEvent("chat:addSuggestion", "/" .. config.configuration.changeCharacterCommand, "Change your character.")
 end
