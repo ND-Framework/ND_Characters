@@ -125,6 +125,10 @@ CreateThread(function()
             local src = player.source
             local lastPayout = lastSalaryPayouts[src]
 
+            if not lastPayout then
+                lastSalaryPayouts[src] = time -- this will make it to where it won't pay the player until next interval which will prevent pay if switching characters everytime.
+            end
+
             if salaryInfo and (not lastPayout or time-lastPayout > salaryInfo.interval*60) then                
                 local salary = salaryInfo.amount or 100
                 player.addMoney("bank", salary, "Salary")
