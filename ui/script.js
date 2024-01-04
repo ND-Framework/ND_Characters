@@ -180,7 +180,7 @@ window.addEventListener("message", function(event) {
         setTimeout(function(){
             $("#tpDoNot").data("id", item.id);
             JSON.parse(item.spawns).forEach((location) => {
-                $("#spawnMenuContainer").append(`<button class="spawnButtons" data-x="${location.x}" data-y="${location.y}" data-z="${location.z}" data-id="${item.id}">${location.label}</button>`);
+                $("#spawnMenuContainer").append(`<button class="spawnButtons" data-x="${location.coords.x}" data-y="${location.coords.y}" data-z="${location.coords.z}" data-id="${item.id}">${location.label}</button>`);
             });
         }, 10);
     }
