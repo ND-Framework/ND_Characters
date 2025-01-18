@@ -2,7 +2,7 @@
 
 author "Andyyy7666"
 description "ND Character Selection (legacy)"
-version "2.1.4"
+version "2.1.5"
 
 fx_version "cerulean"
 game "gta5"
