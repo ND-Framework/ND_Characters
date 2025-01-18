@@ -328,9 +328,25 @@ RegisterNetEvent("ND:characterMenu", function()
     start(true)
 end)
 
+local allowChangeCommand = true -- this doesn't do anything if config option is set.
+local disabledReason = "can't change character right now!"
+
+exports("allowChangeCommand", function(status, reason)
+    allowChangeCommand = status
+    disabledReason = reason or "can't change character right now!"
+end)
+
 if config.configuration.changeCharacterCommand then
     -- Change character command
     RegisterCommand(config.configuration.changeCharacterCommand, function()
+        if not allowChangeCommand then
+            return TriggerEvent("chat:addMessage", {
+                color = {50, 100, 235},
+                multiline = true,
+                args = {"Error", disabledReason}
+            })
+        end
+
         start(true)
     end, false)
     
