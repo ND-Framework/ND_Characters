@@ -18,7 +18,8 @@ files {
     "ui/script.js",
     "ui/style.css",
     "data/configuration.lua",
-    "data/spawns.lua"
+    "data/spawns.lua",
+    "images/**"
 }
 ui_page "ui/index.html"
 
