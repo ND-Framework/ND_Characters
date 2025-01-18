@@ -39,15 +39,9 @@ local function startChangeAppearence(dontReturn)
         if not appearance then
             return not dontReturn and start(true)
         end
-
-        local ped = PlayerPedId()
-        local clothing = {
-            model = GetEntityModel(ped),
-            tattoos = exports["fivem-appearance"]:getPedTattoos(ped),
-            appearance = exports["fivem-appearance"]:getPedAppearance(ped)
-        }
+        
         Wait(4000)
-        TriggerServerEvent("ND_Characters:updateClothing", clothing)
+        TriggerServerEvent("ND_Characters:updateClothing", appearance)
     end, {
         ped = true,
         headBlend = true,
@@ -69,10 +63,10 @@ local function setCharacterClothes(character)
         return startChangeAppearence()
     end
 
-    exports["fivem-appearance"]:setPlayerModel(clothing.model)
+    exports["fivem-appearance"]:setPlayerModel(clothing.model or clothing.appearance.model)
+
     local ped = PlayerPedId()
-    exports["fivem-appearance"]:setPedTattoos(ped, clothing.tattoos)
-    exports["fivem-appearance"]:setPedAppearance(ped, clothing.appearance)
+    exports["fivem-appearance"]:setPedAppearance(ped, clothing.appearance or clothing)
 end
 
 local function tablelength(table)
