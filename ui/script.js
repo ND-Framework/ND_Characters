@@ -167,7 +167,7 @@ window.addEventListener("message", function(event) {
     if (item.type === "ui") {
         if (item.status) {
             $("#serverName").text(item.serverName);
-            $("body").css("background-image", `url(${item.background})`);
+            $("body").css("background-image", `url(../images/${item.background})`);
             $("#playerAmount").text(item.characterAmount);
             display(true);
         } else {
@@ -224,6 +224,6 @@ window.addEventListener("message", function(event) {
     }
 
     if (item.type === "logo" && item.logo) {
-        $("#logo").attr("src", item.logo);
+        $("#logo").attr("src", `../images/${item.logo}`);
     }
 })
