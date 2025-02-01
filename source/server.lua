@@ -114,33 +114,29 @@ CreateThread(function()
             break
         end
     end
-
     local lastSalaryPayouts = {}
     while payChecks do
         Wait(60000)
-
         local time = os.time()
         for _, player in pairs(NDCore.getPlayers()) do
             local salaryInfo = getSalary(player) or config.salaries["default"] or config.salaries["DEFAULT"]
             local src = player.source
             local lastPayout = lastSalaryPayouts[src]
-
             if not lastPayout then
                 lastSalaryPayouts[src] = time -- this will make it to where it won't pay the player until next interval which will prevent pay if switching characters everytime.
             end
-
-            if salaryInfo and (not lastPayout or time-lastPayout > salaryInfo.interval*60) then                
-                local salary = salaryInfo.amount or 100
-                player.addMoney("bank", salary, "Salary")
-                player.notify({
-                    title = "Salary",
-                    description = ("Received $%d."):format(salary),
-                    type = "success",
-                    icon = "sack-dollar"
-                })
+            if salaryInfo and (not lastPayout or time-lastPayout > salaryInfo.interval*60) then
+                local salary = salaryInfo.rank[player.jobInfo.rank] or 100
+                player.addMoney("bank", salary, player.jobInfo.label.." Salary")
+                TriggerClientEvent('ox_lib:notify', player.source, {description = ("Recieved $%s from %s"):format(salary, player.jobInfo.label)})
                 lastSalaryPayouts[src] = time
             end
-
+            if not salaryInfo and (not lastPayout or time-lastPayout > salaryInfo.interval*60) then
+                local salary = 50
+                player.addMoney("bank", salary, "Citizen Salary")
+                TriggerClientEvent('ox_lib:notify', player.source, {description = ("Welfare Check - $%s"):format(salary, player.jobInfo.label)})
+                lastSalaryPayouts[src] = time
+            end
         end
     end
 end)
